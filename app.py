@@ -102,7 +102,7 @@ else:
     )
 
 # AI CFO Recommendations
-st.subheader("SwipeRight Recommendations")
+st.subheader("AI Recommendations")
 
 st.info("""
 • Recover pending credit payments
