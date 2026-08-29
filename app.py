@@ -7,23 +7,24 @@ genai.configure(
 
 model = genai.GenerativeModel("gemini-2.5-flash-lite")
 def ai_cfo(question):
+    try:
+        prompt = f"""
+        You are an expert CFO.
 
-    prompt = f"""
-    You are an expert CFO.
+        Revenue = {revenue}
+        Expenses = {expenses}
+        Profit = {profit}
+        Outstanding Credit = {total_pending}
 
-    Revenue = {revenue}
-    Expenses = {expenses}
-    Profit = {profit}
-    Outstanding Credit = {total_pending}
+        Question:
+        {question}
+        """
 
-    Answer the user question:
+        response = model.generate_content(prompt)
+        return response.text
 
-    {question}
-    """
-
-    response = model.generate_content(prompt)
-
-    return response.text
+    except Exception as e:
+        return f"ERROR: {str(e)}"
 import streamlit as st
 import sqlite3
 import pandas as pd
