@@ -11,17 +11,17 @@ def ai_cfo(question):
 
     q = question.lower()
 
-    if "profit" in q:
-        return f"Current profit is ₹{profit:,.0f}"
+    if q in ["profit", "what is my profit", "current profit"]:
+    return f"Current profit is ₹{profit:,.0f}"
 
-    elif "revenue" in q:
-        return f"Current revenue is ₹{revenue:,.0f}"
+    elif q in ["revenue", "what is my revenue"]:
+    return f"Current revenue is ₹{revenue:,.0f}"
 
-    elif "expense" in q:
-        return f"Current expenses are ₹{expenses:,.0f}"
+    elif q in ["expenses", "expense", "what are my expenses"]:
+    return f"Current expenses are ₹{expenses:,.0f}"
 
-    elif "credit" in q:
-        return f"Outstanding credit is ₹{total_pending:,.0f}"
+    elif q in ["credit", "outstanding credit"]:
+    return f"Outstanding credit is ₹{total_pending:,.0f}"
 
     else:
         response = model.generate_content(...)
