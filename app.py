@@ -92,6 +92,14 @@ st.metric(
     "Outstanding Credit",
     f"₹{total_pending:,.0f}"
 )
+if total_pending > 0:
+    st.warning(
+        f"⚠ ₹{total_pending:,.0f} is pending from customers. Follow up immediately."
+    )
+else:
+    st.success(
+        "✅ No outstanding credit."
+    )
 
 # AI CFO Recommendations
 st.subheader("🤖 AI CFO Recommendations")
