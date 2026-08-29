@@ -322,6 +322,7 @@ lang_code = {
 }[language]
 question = st.text_input(
     "Ask in English, Malayalam or Tamil"
+)
 audio_file = st.audio_input(
     "Or speak your question"
 )
