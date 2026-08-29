@@ -134,8 +134,7 @@ def ai_cfo(question,
 
     elif "credit" in q:
     return f"Outstanding credit is ₹{total_pending:,.0f}"
-    ]:
-        return f"Current expenses are ₹{expenses:,.0f}"
+    
 
     prompt = f"""
     You are an expert CFO.
