@@ -4,3 +4,5 @@ numpy
 google-generativeai
 SpeechRecognition
 gtts
+SpeechRecognition
+pydub
