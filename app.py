@@ -1,3 +1,11 @@
+import google.generativeai as genai
+import os
+
+genai.configure(
+    api_key=st.secrets["GEMINI_API_KEY"]
+)
+
+model = genai.GenerativeModel("gemini-1.5-flash")
 import streamlit as st
 import sqlite3
 import pandas as pd
