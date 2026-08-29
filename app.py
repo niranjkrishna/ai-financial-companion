@@ -60,6 +60,39 @@ st.dataframe(inventory_df, use_container_width=True)
 
 st.divider()
 
+st.divider()
+
+st.subheader("💳 Credit Recovery Dashboard")
+
+credit_df = pd.read_sql_query("""
+SELECT
+    c.customer_name,
+    cp.credit_amount,
+    cp.paid_amount,
+    cp.due_date,
+    cp.status
+FROM Customers c
+JOIN Credit_Payments cp
+ON c.customer_id = cp.customer_id
+""", conn)
+
+credit_df["balance"] = (
+    credit_df["credit_amount"]
+    - credit_df["paid_amount"]
+)
+
+st.dataframe(
+    credit_df,
+    use_container_width=True
+)
+
+total_pending = credit_df["balance"].sum()
+
+st.metric(
+    "Outstanding Credit",
+    f"₹{total_pending:,.0f}"
+)
+
 # AI CFO Recommendations
 st.subheader("🤖 AI CFO Recommendations")
 
