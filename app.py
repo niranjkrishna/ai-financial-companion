@@ -1,3 +1,5 @@
+import speech_recognition as sr
+import tempfile
 import streamlit as st
 st.write("API Key Loaded:", "GEMINI_API_KEY" in st.secrets)
 import google.generativeai as genai
@@ -164,7 +166,7 @@ st.info("""
 st.divider()
 
 
-st.subheader("🎤 Ask Your AI CFO")
+st.subheader(" Ask Your AI CFO")
 
 question = st.text_input(
     "Ask in English, Malayalam or Tamil"
@@ -173,6 +175,21 @@ question = st.text_input(
 audio_file = st.audio_input(
     "Or speak your question"
 )
+
+# Voice Input Handling
+if audio_file:
+    st.success("🎤 Audio received!")
+
+    # TEMPORARY TEST
+    question = "what is my profit"
+
+    st.write("You said:", question)
+
+if question:
+    answer = ai_cfo(question)
+
+    st.markdown("### 🤖 AI CFO Advice")
+    st.write(answer)
 
 if question:
     answer = ai_cfo(question)
