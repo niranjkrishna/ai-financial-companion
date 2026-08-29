@@ -6,7 +6,7 @@ genai.configure(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
-model = genai.GenerativeModel("gemini-3.6-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 def ai_cfo(question):
 
     q = question.lower()
