@@ -38,7 +38,7 @@ conn = sqlite3.connect(
 
 cursor = conn.cursor()
 
-st.title("💰 AI Financial Companion")
+st.title("AI Financial Companion")
 st.caption("Voice-enabled CFO for Small Businesses")
 def process_voice_command(text):
 
@@ -71,7 +71,7 @@ def process_voice_command(text):
 
                 conn.commit()
 
-                return f"✅ Customer {name} added"
+                return f" Customer {name} added"
 
             return "❌ Format: Add customer Rahul phone 9876543210"
 
@@ -170,7 +170,6 @@ def ai_cfo(question,
 # -----------------------------
 # REVENUE
 # -----------------------------
-
 revenue_df = pd.read_sql_query(
     """
     SELECT SUM(total_amount) AS revenue
@@ -226,7 +225,7 @@ col3.metric(
 )
 st.divider()
 
-st.subheader("📦 Inventory Status")
+st.subheader(" Inventory Status")
 
 inventory_df = pd.read_sql_query(
     """
@@ -244,7 +243,7 @@ st.dataframe(
 )
 st.divider()
 
-st.subheader("💳 Credit Recovery Dashboard")
+st.subheader(" Credit Recovery Dashboard")
 
 credit_df = pd.read_sql_query(
     """
@@ -323,10 +322,12 @@ lang_code = {
 }[language]
 question = st.text_input(
     "Ask in English, Malayalam or Tamil"
+audio_file = st.audio_input(
+    "Or speak your question"
 )
 if audio_file:
 
-    st.success("🎤 Audio received")
+    st.success(" Audio received")
 
     with tempfile.NamedTemporaryFile(
         delete=False,
