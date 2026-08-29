@@ -168,6 +168,17 @@ st.divider()
 
 st.subheader(" Ask Your AI CFO")
 
+language = st.selectbox(
+    "🌐 Select Language",
+    ["English", "Malayalam", "Tamil"]
+)
+
+lang_code = {
+    "English": "en-IN",
+    "Malayalam": "ml-IN",
+    "Tamil": "ta-IN"
+}[language]
+
 question = st.text_input(
     "Ask in English, Malayalam or Tamil"
 )
@@ -193,7 +204,7 @@ if audio_file:
 
         question = recognizer.recognize_google(
             audio_data,
-            language="en-IN"
+            language=lang_code
         )
 
         st.write("You said:", question)
