@@ -1,3 +1,4 @@
+st.write("API Key Loaded:", "GEMINI_API_KEY" in st.secrets)
 import google.generativeai as genai
 import os
 import streamlit as st
@@ -5,7 +6,7 @@ genai.configure(
     api_key=st.secrets["GEMINI_API_KEY"]
 )
 
-model = genai.GenerativeModel("gemini-3.7-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 def ai_cfo(question):
     try:
         prompt = f"""
