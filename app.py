@@ -115,53 +115,50 @@ def process_voice_command(text):
     except Exception as e:
 
         return f"❌ {e}"
-def ai_cfo(question,
-           revenue,
-           expenses,
-           profit,
-           total_pending):
+import re
 
-    q = question.lower()
+def ai_cfo(question, revenue, expenses, profit, total_pending):
 
+    q = re.sub(r"[^\w\s]", "", question.lower()).strip()
+
+    # Local answers (NO Gemini call)
     if "profit" in q:
-    return f"Current profit is ₹{profit:,.0f}"
+        return f"Current profit is ₹{profit:,.0f}"
 
     elif "revenue" in q:
-    return f"Current revenue is ₹{revenue:,.0f}"
+        return f"Current revenue is ₹{revenue:,.0f}"
 
     elif "expense" in q:
-    return f"Current expenses are ₹{expenses:,.0f}"
+        return f"Current expenses are ₹{expenses:,.0f}"
 
     elif "credit" in q:
-    return f"Outstanding credit is ₹{total_pending:,.0f}"
-    
+        return f"Outstanding credit is ₹{total_pending:,.0f}"
 
+    # Only complex questions go to Gemini
     prompt = f"""
     You are an expert CFO.
 
-    Revenue: {revenue}
-    Expenses: {expenses}
-    Profit: {profit}
-    Outstanding Credit: {total_pending}
+    Revenue: ₹{revenue}
+    Expenses: ₹{expenses}
+    Profit: ₹{profit}
+    Outstanding Credit: ₹{total_pending}
 
     Question:
     {question}
 
-    Keep answer short.
+    Instructions:
+    - Give a short business answer
+    - Use simple bullet points
+    - Use Indian Rupees (₹)
+    - Keep answer under 150 words
     """
 
     try:
-
-        response = model.generate_content(
-            prompt
-        )
-
+        response = model.generate_content(prompt)
         return response.text
 
     except Exception:
-
         return "Gemini quota exceeded. Please try again later."
-# -----------------------------
 # REVENUE
 # -----------------------------
 revenue_df = pd.read_sql_query(
