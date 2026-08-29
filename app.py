@@ -26,9 +26,6 @@ def ai_cfo(question):
     else:
         response = model.generate_content(...)
         return response.text
-
-    except Exception as e:
-        return f"ERROR: {str(e)}"
 import streamlit as st
 import sqlite3
 import pandas as pd
