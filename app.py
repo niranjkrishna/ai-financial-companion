@@ -122,7 +122,13 @@ def process_voice_command(text):
             parts = text.split()
 
             amount = float(parts[2])
-            customer_name = parts[4]
+            match = re.search(
+                r"add credit\s+(\d+)\s+for\s+(.+)",
+                text
+            )
+
+            amount = float(match.group(1))
+            customer_name = match.group(2).strip()
 
             customer = cursor.execute(
                 """
@@ -166,7 +172,13 @@ def process_voice_command(text):
             parts = text.split()
 
             amount = float(parts[2])
-            customer_name = parts[4]
+            match = re.search(
+                r"record sale\s+(\d+)\s+for\s+(.+)",
+                text
+            )
+
+            amount = float(match.group(1))
+            customer_name = match.group(2).strip()
 
             customer = cursor.execute(
                 """
@@ -236,39 +248,44 @@ def process_voice_command(text):
         # -------------------------
         elif text.startswith("pay credit"):
 
-            parts = text.split()
+    match = re.search(
+        r"pay credit\s+(\d+)\s+for\s+(.+)",
+        text
+    )
 
-            amount = float(parts[2])
-            customer_name = parts[4]
+    if match:
 
-            customer = cursor.execute(
+        amount = float(match.group(1))
+        customer_name = match.group(2).strip()
+
+        customer = cursor.execute(
+            """
+            SELECT customer_id
+            FROM Customers
+            WHERE LOWER(customer_name)=?
+            """,
+            (customer_name.lower(),)
+        ).fetchone()
+
+        if customer:
+
+            cursor.execute(
                 """
-                SELECT customer_id
-                FROM Customers
-                WHERE LOWER(customer_name)=?
+                UPDATE Credit_Payments
+                SET paid_amount = paid_amount + ?
+                WHERE customer_id = ?
                 """,
-                (customer_name.lower(),)
-            ).fetchone()
-
-            if customer:
-
-                cursor.execute(
-                    """
-                    UPDATE Credit_Payments
-                    SET paid_amount = paid_amount + ?
-                    WHERE customer_id = ?
-                    """,
-                    (
-                        amount,
-                        customer[0]
-                    )
+                (
+                    amount,
+                    customer[0]
                 )
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"✅ Received ₹{amount} from {customer_name}"
+            return f"✅ Received ₹{amount} from {customer_name}"
 
-            return f"❌ Customer {customer_name} not found"
+        return f"❌ Customer {customer_name} not found"
 
         return None
 
