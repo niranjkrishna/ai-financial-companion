@@ -178,12 +178,29 @@ audio_file = st.audio_input(
 
 # Voice Input Handling
 if audio_file:
+
     st.success("🎤 Audio received!")
 
-    # TEMPORARY TEST
-    question = "what is my profit"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+        tmp.write(audio_file.getvalue())
+        temp_path = tmp.name
 
-    st.write("You said:", question)
+    recognizer = sr.Recognizer()
+
+    try:
+        with sr.AudioFile(temp_path) as source:
+            audio_data = recognizer.record(source)
+
+        question = recognizer.recognize_google(
+            audio_data,
+            language="en-IN"
+        )
+
+        st.write("You said:", question)
+
+    except Exception as e:
+        st.error(f"Speech recognition failed: {e}")
+        question = None
 
 if question:
     answer = ai_cfo(question)
