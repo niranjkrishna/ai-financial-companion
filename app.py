@@ -123,22 +123,17 @@ def ai_cfo(question,
 
     q = question.lower()
 
-    if q in [
-        "profit",
-        "what is my profit",
-        "current profit"
-    ]:
-        return f"Current profit is ₹{profit:,.0f}"
+    if "profit" in q:
+    return f"Current profit is ₹{profit:,.0f}"
 
-    if q in [
-        "revenue",
-        "what is my revenue"
-    ]:
-        return f"Current revenue is ₹{revenue:,.0f}"
+    elif "revenue" in q:
+    return f"Current revenue is ₹{revenue:,.0f}"
 
-    if q in [
-        "expenses",
-        "what are my expenses"
+    elif "expense" in q:
+    return f"Current expenses are ₹{expenses:,.0f}"
+
+    elif "credit" in q:
+    return f"Outstanding credit is ₹{total_pending:,.0f}"
     ]:
         return f"Current expenses are ₹{expenses:,.0f}"
 
@@ -390,7 +385,7 @@ if question:
         )
 
         st.markdown(
-            "### 🤖 AI CFO Advice"
+            "###  AI CFO Advice"
         )
 
         st.write(answer)
