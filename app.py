@@ -25,15 +25,23 @@ def ai_cfo(question):
 
     else:
         prompt = f"""
-        You are an expert CFO.
+        You are a CFO assistant.
 
-        Revenue = {revenue}
-        Expenses = {expenses}
-        Profit = {profit}
-        Outstanding Credit = {total_pending}
+        Business Data:
+        Revenue: ₹{revenue}
+        Expenses: ₹{expenses}
+        Profit: ₹{profit}
+        Outstanding Credit: ₹{total_pending}
 
         Question:
         {question}
+
+        Instructions:
+        - Use Indian Rupees (₹)
+        - Do NOT use markdown symbols such as **, #, or `
+        - Give a concise business answer
+        - Use simple bullet points
+        - Keep the response under 150 words
         """
         response = model.generate_content(prompt)
         return response.text
@@ -168,4 +176,5 @@ audio_file = st.audio_input(
 
 if question:
     answer = ai_cfo(question)
-    st.success(answer)
+    st.markdown("### 🤖 AI CFO Advice")
+    st.write(answer)
