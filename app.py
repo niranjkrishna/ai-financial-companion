@@ -12,19 +12,30 @@ def ai_cfo(question):
     q = question.lower()
 
     if q in ["profit", "what is my profit", "current profit"]:
-    return f"Current profit is ₹{profit:,.0f}"
+        return f"Current profit is ₹{profit:,.0f}"
 
     elif q in ["revenue", "what is my revenue"]:
-    return f"Current revenue is ₹{revenue:,.0f}"
+        return f"Current revenue is ₹{revenue:,.0f}"
 
     elif q in ["expenses", "expense", "what are my expenses"]:
-    return f"Current expenses are ₹{expenses:,.0f}"
+        return f"Current expenses are ₹{expenses:,.0f}"
 
     elif q in ["credit", "outstanding credit"]:
-    return f"Outstanding credit is ₹{total_pending:,.0f}"
+        return f"Outstanding credit is ₹{total_pending:,.0f}"
 
     else:
-        response = model.generate_content(...)
+        prompt = f"""
+        You are an expert CFO.
+
+        Revenue = {revenue}
+        Expenses = {expenses}
+        Profit = {profit}
+        Outstanding Credit = {total_pending}
+
+        Question:
+        {question}
+        """
+        response = model.generate_content(prompt)
         return response.text
 import streamlit as st
 import sqlite3
