@@ -6,6 +6,24 @@ genai.configure(
 )
 
 model = genai.GenerativeModel("gemini-1.5-flash")
+def ai_cfo(question):
+
+    prompt = f"""
+    You are an expert CFO.
+
+    Revenue = {revenue}
+    Expenses = {expenses}
+    Profit = {profit}
+    Outstanding Credit = {total_pending}
+
+    Answer the user question:
+
+    {question}
+    """
+
+    response = model.generate_content(prompt)
+
+    return response.text
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -124,41 +142,17 @@ st.info("""
 
 st.divider()
 
-st.subheader("💬 Ask Your AI CFO")
+
+st.subheader("🎤 Ask Your AI CFO")
 
 question = st.text_input(
-    "Ask a question about your business"
+    "Ask in English, Malayalam or Tamil"
+)
+
+audio_file = st.audio_input(
+    "Or speak your question"
 )
 
 if question:
-
-    q = question.lower()
-
-    if "profit" in q:
-        st.success(
-            f"Current profit is ₹{profit:,.0f}"
-        )
-
-    elif "expense" in q:
-        st.success(
-            f"Total expenses are ₹{expenses:,.0f}"
-        )
-
-    elif "revenue" in q:
-        st.success(
-            f"Total revenue is ₹{revenue:,.0f}"
-        )
-
-    elif "inventory" in q:
-        st.success(
-            "Inventory data is available above."
-        )
-
-    else:
-        st.warning(
-            "I don't understand that question yet."
-        )
-
-
-
-
+    answer = ai_cfo(question)
+    st.success(answer)
