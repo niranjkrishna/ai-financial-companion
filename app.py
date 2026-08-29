@@ -255,17 +255,17 @@ def process_voice_command(text):
 
         if match:
 
-        amount = float(match.group(1))
-        customer_name = match.group(2).strip()
+            amount = float(match.group(1))
+            customer_name = match.group(2).strip()
 
-        customer = cursor.execute(
-            """
-            SELECT customer_id
-            FROM Customers
-            WHERE LOWER(customer_name)=?
-            """,
-            (customer_name.lower(),)
-        ).fetchone()
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
+                (customer_name.lower(),)
+            ).fetchone()
 
         if customer:
 
