@@ -7,11 +7,11 @@ conn = sqlite3.connect("business.db")
 
 st.set_page_config(
     page_title="AI Financial Companion",
-    page_icon="💰",
+    page_icon="",
     layout="wide"
 )
 
-st.title("💰 AI Financial Companion")
+st.title("SwipeRight")
 st.write("Your AI CFO for Small Businesses")
 
 # Financial Metrics
@@ -42,14 +42,14 @@ st.divider()
 # Health Score
 health_score = 78
 
-st.subheader("📊 Business Health Score")
+st.subheader("Business Health Score")
 st.progress(health_score / 100)
 st.metric("Health Score", f"{health_score}/100")
 
 st.divider()
 
 # Inventory
-st.subheader("📦 Inventory Status")
+st.subheader("Inventory Status")
 
 inventory_df = pd.read_sql_query(
     "SELECT product_name, stock_quantity FROM Inventory",
@@ -62,7 +62,7 @@ st.divider()
 
 st.divider()
 
-st.subheader("💳 Credit Recovery Dashboard")
+st.subheader("Credit Recovery Dashboard")
 
 credit_df = pd.read_sql_query("""
 SELECT
@@ -98,7 +98,7 @@ if total_pending > 0:
     )
 else:
     st.success(
-        "✅ No outstanding credit."
+        "No outstanding credit."
     )
 
 # AI CFO Recommendations
