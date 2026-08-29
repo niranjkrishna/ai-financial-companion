@@ -230,7 +230,41 @@ def process_voice_command(text):
             conn.commit()
 
             return f"✅ Inventory updated: {product} ({qty})"
+    elif text.startswith("pay credit"):
 
+        parts = text.split()
+
+        amount = float(parts[2])
+        customer_name = parts[4]
+
+        customer = cursor.execute(
+            """
+            SELECT customer_id
+            FROM Customers
+            WHERE LOWER(customer_name)=?
+            """,
+        (customer_name.lower(),)
+        ).fetchone()
+
+        if customer:
+
+        cursor.execute(
+            """
+            UPDATE Credit_Payments
+            SET paid_amount = paid_amount + ?
+            WHERE customer_id = ?
+            """,
+            (
+                amount,
+                customer[0]
+            )
+        )
+
+        conn.commit()
+
+        return f"✅ Received ₹{amount} from {customer_name}"
+
+    return f"❌ Customer {customer_name} not found"
         return None
 
     except Exception as e:
