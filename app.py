@@ -11,23 +11,25 @@ genai.configure(
 model = genai.GenerativeModel("gemini-3.6-flash")
 import re
 
-def process_voice_command(command):
+def process_voice_command(text):
 
-    q = command.lower()
+    text = text.lower()
 
-    # Add customer
-    if "add customer" in q:
+    if text.startswith("add customer"):
 
-        name = q.replace("add customer", "").strip()
+        parts = text.split()
 
-        cursor.execute("""
-        INSERT INTO Customers(customer_name)
-        VALUES (?)
-        """, (name,))
+        name = parts[2]
+        phone = parts[4]
+
+        cursor.execute(
+            "INSERT INTO Customers (customer_name, phone) VALUES (?,?)",
+            (name, phone)
+        )
 
         conn.commit()
 
-        return f"Customer {name} added successfully"
+        return f"✅ Customer {name} saved"
 
     return None
 def ai_cfo(question):
