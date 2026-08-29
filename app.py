@@ -46,8 +46,9 @@ def process_voice_command(text):
 
     try:
 
+        # -------------------------
         # ADD CUSTOMER
-
+        # -------------------------
         if text.startswith("add customer"):
 
             match = re.search(
@@ -71,13 +72,14 @@ def process_voice_command(text):
 
                 conn.commit()
 
-                return f" Customer {name} added"
+                return f"✅ Customer {name} added"
 
             return "❌ Format: Add customer Rahul phone 9876543210"
 
+        # -------------------------
         # ADD EXPENSE
-
-        if text.startswith("add expense"):
+        # -------------------------
+        elif text.startswith("add expense"):
 
             match = re.search(
                 r"add expense\s+(\w+)\s+(\d+)",
@@ -109,6 +111,125 @@ def process_voice_command(text):
                 conn.commit()
 
                 return f"✅ Expense ₹{amount} added"
+
+            return "❌ Format: Add expense Rent 5000"
+
+        # -------------------------
+        # ADD CREDIT
+        # -------------------------
+        elif text.startswith("add credit"):
+
+            parts = text.split()
+
+            amount = float(parts[2])
+            customer_name = parts[4]
+
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
+                (customer_name.lower(),)
+            ).fetchone()
+
+            if customer:
+
+                cursor.execute(
+                    """
+                    INSERT INTO Credit_Payments
+                    (
+                        customer_id,
+                        credit_amount,
+                        paid_amount
+                    )
+                    VALUES (?, ?, ?)
+                    """,
+                    (
+                        customer[0],
+                        amount,
+                        0
+                    )
+                )
+
+                conn.commit()
+
+                return f"✅ Credit ₹{amount} added for {customer_name}"
+
+            return f"❌ Customer {customer_name} not found"
+
+        # -------------------------
+        # RECORD SALE
+        # -------------------------
+        elif text.startswith("record sale"):
+
+            parts = text.split()
+
+            amount = float(parts[2])
+            customer_name = parts[4]
+
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
+                (customer_name.lower(),)
+            ).fetchone()
+
+            if customer:
+
+                cursor.execute(
+                    """
+                    INSERT INTO Sales
+                    (
+                        customer_id,
+                        total_amount,
+                        payment_method
+                    )
+                    VALUES (?, ?, ?)
+                    """,
+                    (
+                        customer[0],
+                        amount,
+                        "Cash"
+                    )
+                )
+
+                conn.commit()
+
+                return f"✅ Sale ₹{amount} recorded for {customer_name}"
+
+            return f"❌ Customer {customer_name} not found"
+
+        # -------------------------
+        # ADD INVENTORY
+        # -------------------------
+        elif text.startswith("add inventory"):
+
+            parts = text.split()
+
+            product = parts[2]
+            qty = int(parts[4])
+
+            cursor.execute(
+                """
+                INSERT INTO Inventory
+                (
+                    product_name,
+                    stock_quantity
+                )
+                VALUES (?, ?)
+                """,
+                (
+                    product,
+                    qty
+                )
+            )
+
+            conn.commit()
+
+            return f"✅ Inventory updated: {product} ({qty})"
 
         return None
 
