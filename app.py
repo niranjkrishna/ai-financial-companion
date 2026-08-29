@@ -73,6 +73,43 @@ st.info("""
 • Focus on top-selling products
 """)
 
+st.divider()
+
+st.subheader("💬 Ask Your AI CFO")
+
+question = st.text_input(
+    "Ask a question about your business"
+)
+
+if question:
+
+    q = question.lower()
+
+    if "profit" in q:
+        st.success(
+            f"Current profit is ₹{profit:,.0f}"
+        )
+
+    elif "expense" in q:
+        st.success(
+            f"Total expenses are ₹{expenses:,.0f}"
+        )
+
+    elif "revenue" in q:
+        st.success(
+            f"Total revenue is ₹{revenue:,.0f}"
+        )
+
+    elif "inventory" in q:
+        st.success(
+            "Inventory data is available above."
+        )
+
+    else:
+        st.warning(
+            "I don't understand that question yet."
+        )
+
 
 
 
