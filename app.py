@@ -122,16 +122,16 @@ def ai_cfo(question, revenue, expenses, profit, total_pending):
     q = re.sub(r"[^\w\s]", "", question.lower()).strip()
 
     # Local answers (NO Gemini call)
-    if q == "profit"::
+    if q == "profit":
         return f"Current profit is ₹{profit:,.0f}"
 
-    elif q == "revenue"::
+    elif q == "revenue":
         return f"Current revenue is ₹{revenue:,.0f}"
 
-    elif q == "expenses"::
+    elif q == "expenses":
         return f"Current expenses are ₹{expenses:,.0f}"
 
-    elif q == "credit"::
+    elif q == "credit":
         return f"Outstanding credit is ₹{total_pending:,.0f}"
 
     # Only complex questions go to Gemini
