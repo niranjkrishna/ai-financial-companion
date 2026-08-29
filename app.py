@@ -9,6 +9,27 @@ genai.configure(
 )
 
 model = genai.GenerativeModel("gemini-3.6-flash")
+import re
+
+def process_voice_command(command):
+
+    q = command.lower()
+
+    # Add customer
+    if "add customer" in q:
+
+        name = q.replace("add customer", "").strip()
+
+        cursor.execute("""
+        INSERT INTO Customers(customer_name)
+        VALUES (?)
+        """, (name,))
+
+        conn.commit()
+
+        return f"Customer {name} added successfully"
+
+    return None
 def ai_cfo(question):
 
     q = question.lower()
@@ -206,7 +227,14 @@ if audio_file:
             audio_data,
             language=lang_code
         )
+        result = process_voice_command(question)
 
+        if result:
+            st.success(result)
+        else:
+            answer = ai_cfo(question)
+            st.markdown("### 🤖 AI CFO Advice")
+            st.write(answer)
         st.write("You said:", question)
 
     except Exception as e:
