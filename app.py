@@ -248,12 +248,12 @@ def process_voice_command(text):
         # -------------------------
         elif text.startswith("pay credit"):
 
-    match = re.search(
-        r"pay credit\s+(\d+)\s+for\s+(.+)",
-        text
-    )
+            match = re.search(
+            r"pay credit\s+(\d+)\s+for\s+(.+)",
+            text
+        )
 
-    if match:
+        if match:
 
         amount = float(match.group(1))
         customer_name = match.group(2).strip()
