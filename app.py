@@ -11,7 +11,7 @@ import re
 # -----------------------------
 
 st.set_page_config(
-    page_title="AI Financial Companion",
+    page_title="SWIPE RIGHT",
     layout="wide"
 )
 
@@ -72,7 +72,7 @@ def process_voice_command(text):
 
                 conn.commit()
 
-                return f"✅ Customer {name} added"
+                return f"Customer {name} added"
 
             return "❌ Format: Add customer Rahul phone 9876543210"
 
