@@ -8,20 +8,23 @@ genai.configure(
 
 model = genai.GenerativeModel("gemini-3.6-flash")
 def ai_cfo(question):
-    try:
-        prompt = f"""
-        You are an expert CFO.
 
-        Revenue = {revenue}
-        Expenses = {expenses}
-        Profit = {profit}
-        Outstanding Credit = {total_pending}
+    q = question.lower()
 
-        Question:
-        {question}
-        """
+    if "profit" in q:
+        return f"Current profit is ₹{profit:,.0f}"
 
-        response = model.generate_content(prompt)
+    elif "revenue" in q:
+        return f"Current revenue is ₹{revenue:,.0f}"
+
+    elif "expense" in q:
+        return f"Current expenses are ₹{expenses:,.0f}"
+
+    elif "credit" in q:
+        return f"Outstanding credit is ₹{total_pending:,.0f}"
+
+    else:
+        response = model.generate_content(...)
         return response.text
 
     except Exception as e:
