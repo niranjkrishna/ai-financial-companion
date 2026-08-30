@@ -56,25 +56,24 @@ def process_voice_command(text):
                 text
             )
 
-            if match:
+            if not match:
+                return "❌ Format: Add customer Rahul phone 9876543210"
 
-                name = match.group(1)
-                phone = match.group(2)
+            name = match.group(1)
+            phone = match.group(2)
 
-                cursor.execute(
-                    """
-                    INSERT INTO Customers
-                    (customer_name, phone)
-                    VALUES (?, ?)
-                    """,
-                    (name, phone)
-                )
+            cursor.execute(
+                """
+                INSERT INTO Customers
+                (customer_name, phone)
+                VALUES (?, ?)
+                """,
+                (name, phone)
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"Customer {name} added"
-
-            return "❌ Format: Add customer Rahul phone 9876543210"
+            return f"✅ Customer {name} added"
 
         # -------------------------
         # ADD EXPENSE
@@ -86,44 +85,46 @@ def process_voice_command(text):
                 text
             )
 
-            if match:
+            if not match:
+                return "❌ Format: Add expense Rent 5000"
 
-                category = match.group(1)
-                amount = float(match.group(2))
+            category = match.group(1)
+            amount = float(match.group(2))
 
-                cursor.execute(
-                    """
-                    INSERT INTO Expenses
-                    (
-                        expense_category,
-                        description,
-                        amount
-                    )
-                    VALUES (?, ?, ?)
-                    """,
-                    (
-                        category,
-                        category,
-                        amount
-                    )
+            cursor.execute(
+                """
+                INSERT INTO Expenses
+                (
+                    expense_category,
+                    description,
+                    amount
                 )
+                VALUES (?, ?, ?)
+                """,
+                (
+                    category,
+                    category,
+                    amount
+                )
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"✅ Expense ₹{amount} added"
-
-            return "❌ Format: Add expense Rent 5000"
+            return f"✅ Expense ₹{amount} added"
 
         # -------------------------
         # ADD CREDIT
         # -------------------------
         elif text.startswith("add credit"):
+
             match = re.search(
                 r"add credit\s+(\d+)\s+for\s+(.+)",
                 text
             )
+
             if not match:
                 return "❌ Format: Add credit 5000 for Rahul Kumar"
+
             amount = float(match.group(1))
             customer_name = match.group(2).strip()
 
@@ -136,56 +137,57 @@ def process_voice_command(text):
                 (customer_name.lower(),)
             ).fetchone()
 
-            if customer:
+            if not customer:
+                return f"❌ Customer {customer_name} not found"
 
-                cursor.execute(
-                    """
-                    INSERT INTO Credit_Payments
-                    (
-                        customer_id,
-                        credit_amount,
-                        paid_amount
-                    )
-                    VALUES (?, ?, ?)
-                    """,
-                    (
-                        customer[0],
-                        amount,
-                        0
-                    )
+            cursor.execute(
+                """
+                INSERT INTO Credit_Payments
+                (
+                    customer_id,
+                    credit_amount,
+                    paid_amount
                 )
+                VALUES (?, ?, ?)
+                """,
+                (
+                    customer[0],
+                    amount,
+                    0
+                )
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"✅ Credit ₹{amount} added for {customer_name}"
-
-            return f"❌ Customer {customer_name} not found"
+            return f"✅ Credit ₹{amount} added for {customer_name}"
 
         # -------------------------
         # RECORD SALE
         # -------------------------
         elif text.startswith("record sale"):
+
             match = re.search(
                 r"record sale\s+(\d+)\s+for\s+(.+)",
                 text
             )
 
-        if not match:
-            return "❌ Format: Record sale 5000 for Rahul Kumar"
+            if not match:
+                return "❌ Format: Record sale 5000 for Rahul Kumar"
 
-        amount = float(match.group(1))
-        customer_name = match.group(2).strip()
+            amount = float(match.group(1))
+            customer_name = match.group(2).strip()
 
-        customer = cursor.execute(
-            """
-            SELECT customer_id
-            FROM Customers
-            WHERE LOWER(customer_name)=?
-            """,
-            (customer_name.lower(),)
-        ).fetchone()
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
+                (customer_name.lower(),)
+            ).fetchone()
 
-        if customer:
+            if not customer:
+                return f"❌ Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -208,17 +210,21 @@ def process_voice_command(text):
 
             return f"✅ Sale ₹{amount} recorded for {customer_name}"
 
-        return f"❌ Customer {customer_name} not found"
-
         # -------------------------
         # ADD INVENTORY
         # -------------------------
         elif text.startswith("add inventory"):
 
-            parts = text.split()
+            match = re.search(
+                r"add inventory\s+(.+)\s+qty\s+(\d+)",
+                text
+            )
 
-            product = parts[2]
-            qty = int(parts[4])
+            if not match:
+                return "❌ Format: Add inventory Rice qty 50"
+
+            product = match.group(1).strip()
+            qty = int(match.group(2))
 
             cursor.execute(
                 """
@@ -245,46 +251,48 @@ def process_voice_command(text):
         elif text.startswith("pay credit"):
 
             match = re.search(
-            r"pay credit\s+(\d+)\s+for\s+(.+)",
-            text
+                r"pay credit\s+(\d+)\s+for\s+(.+)",
+                text
             )
 
-            if match:
+            if not match:
+                return "❌ Format: Pay credit 1000 for Rahul Kumar"
 
-                amount = float(match.group(1))
-                customer_name = match.group(2).strip()
+            amount = float(match.group(1))
+            customer_name = match.group(2).strip()
 
-                customer = cursor.execute(
-                    """
-                    SELECT customer_id
-                    FROM Customers
-                    WHERE LOWER(customer_name)=?
-                    """,
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
                 (customer_name.lower(),)
             ).fetchone()
 
-            if customer:
+            if not customer:
+                return f"❌ Customer {customer_name} not found"
 
-                cursor.execute(
-                    """
-                    UPDATE Credit_Payments
-                    SET paid_amount = paid_amount + ?
-                    WHERE customer_id = ?
-                    """,
-                    (
-                        amount,
-                        customer[0]
-                    )
+            cursor.execute(
+                """
+                UPDATE Credit_Payments
+                SET paid_amount = paid_amount + ?
+                WHERE customer_id = ?
+                """,
+                (
+                    amount,
+                    customer[0]
                 )
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"✅ Received ₹{amount} from {customer_name}"
-
-            return f"❌ Customer {customer_name} not found"
+            return f"✅ Received ₹{amount} from {customer_name}"
 
         return None
 
+    except Exception as e:
+        return f"❌ {e}"
     except Exception as e:
 
         return f"❌ {e}"
