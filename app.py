@@ -289,6 +289,19 @@ def process_voice_command(text):
 
             return f"✅ Received ₹{amount} from {customer_name}"
 
+        elif text == "clear all credits":
+
+            cursor.execute(
+                """
+                UPDATE Credit_Payments
+                SET paid_amount = credit_amount
+                """
+            )
+
+            conn.commit()
+
+            return "✅ All outstanding credits cleared"
+
         return None
 
     except Exception as e:
