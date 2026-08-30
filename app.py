@@ -38,7 +38,7 @@ conn = sqlite3.connect(
 
 cursor = conn.cursor()
 
-st.title("AI Financial Companion")
+st.title("SWIPE RIGHT")
 st.caption("Voice-enabled CFO for Small Businesses")
 def process_voice_command(text):
 
