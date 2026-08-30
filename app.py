@@ -49,7 +49,7 @@ def process_voice_command(text):
         # -------------------------
         # ADD CUSTOMER
         # -------------------------
-        elif text.startswith("add customer"):
+        if text.startswith("add customer"):
 
             match = re.search(
                 r"add customer\s+(.+)\s+phone\s+(\d+)",
