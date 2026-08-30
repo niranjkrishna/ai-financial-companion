@@ -46,25 +46,35 @@ def process_voice_command(text):
 
     try:
 
+        # -------------------------
         # ADD CUSTOMER
+        # -------------------------
         if text.startswith("add customer"):
-            ...
+
+            match = re.search(
+                r"add customer\s+(.+)\s+phone\s+(\d+)",
+                text
+            )
+
+            if not match:
+                return "❌ Format: Add customer Rahul Kumar phone 9876543210"
+
+            name = match.group(1).strip()
+            phone = match.group(2)
+
+            cursor.execute(
+                """
+                INSERT INTO Customers
+                (customer_name, phone)
+                VALUES (?, ?)
+                """,
+                (name, phone)
+            )
+
+            conn.commit()
+
             return f"✅ Customer {name} added"
 
-        # ADD EXPENSE
-        elif text.startswith("add expense"):
-            ...
-            return f"✅ Expense added"
-
-        # ADD CREDIT
-        elif text.startswith("add credit"):
-            ...
-            return f"✅ Credit added"
-
-        return None
-
-    except Exception as e:
-        return f"❌ {e}"
         # -------------------------
         # ADD EXPENSE
         # -------------------------
@@ -84,18 +94,10 @@ def process_voice_command(text):
             cursor.execute(
                 """
                 INSERT INTO Expenses
-                (
-                    expense_category,
-                    description,
-                    amount
-                )
+                (expense_category, description, amount)
                 VALUES (?, ?, ?)
                 """,
-                (
-                    category,
-                    category,
-                    amount
-                )
+                (category, category, amount)
             )
 
             conn.commit()
@@ -133,18 +135,10 @@ def process_voice_command(text):
             cursor.execute(
                 """
                 INSERT INTO Credit_Payments
-                (
-                    customer_id,
-                    credit_amount,
-                    paid_amount
-                )
+                (customer_id, credit_amount, paid_amount)
                 VALUES (?, ?, ?)
                 """,
-                (
-                    customer[0],
-                    amount,
-                    0
-                )
+                (customer[0], amount, 0)
             )
 
             conn.commit()
@@ -182,18 +176,10 @@ def process_voice_command(text):
             cursor.execute(
                 """
                 INSERT INTO Sales
-                (
-                    customer_id,
-                    total_amount,
-                    payment_method
-                )
+                (customer_id, total_amount, payment_method)
                 VALUES (?, ?, ?)
                 """,
-                (
-                    customer[0],
-                    amount,
-                    "Cash"
-                )
+                (customer[0], amount, "Cash")
             )
 
             conn.commit()
@@ -219,16 +205,10 @@ def process_voice_command(text):
             cursor.execute(
                 """
                 INSERT INTO Inventory
-                (
-                    product_name,
-                    stock_quantity
-                )
+                (product_name, stock_quantity)
                 VALUES (?, ?)
                 """,
-                (
-                    product,
-                    qty
-                )
+                (product, qty)
             )
 
             conn.commit()
@@ -269,16 +249,16 @@ def process_voice_command(text):
                 SET paid_amount = paid_amount + ?
                 WHERE customer_id = ?
                 """,
-                (
-                    amount,
-                    customer[0]
-                )
+                (amount, customer[0])
             )
 
             conn.commit()
 
             return f"✅ Received ₹{amount} from {customer_name}"
 
+        # -------------------------
+        # CLEAR ALL CREDITS
+        # -------------------------
         elif text == "clear all credits":
 
             cursor.execute(
@@ -294,6 +274,8 @@ def process_voice_command(text):
 
         return None
 
+    except Exception as e:
+        return f"❌ {e}"
     except Exception as e:
         return f"❌ {e}"
     except Exception as e:
