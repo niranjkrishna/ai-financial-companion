@@ -49,31 +49,31 @@ def process_voice_command(text):
         # -------------------------
         # ADD CUSTOMER
         # -------------------------
-        if text.startswith("add customer"):
+        elif text.startswith("add customer"):
 
             match = re.search(
-                r"add customer\s+(\w+)\s+phone\s+(\d+)",
+                r"add customer\s+(.+)\s+phone\s+(\d+)",
                 text
             )
 
             if not match:
-                return "❌ Format: Add customer Rahul phone 9876543210"
+                return "❌ Format: Add customer Rahul Kumar phone 9876543210"
 
-            name = match.group(1)
+            name = match.group(1).strip()
             phone = match.group(2)
 
-            cursor.execute(
-                """
-                INSERT INTO Customers
-                (customer_name, phone)
-                VALUES (?, ?)
-                """,
-                (name, phone)
-            )
+        cursor.execute(
+            """
+            INSERT INTO Customers
+            (customer_name, phone)
+            VALUES (?, ?)
+            """,
+            (name, phone)
+        )
 
-            conn.commit()
+        conn.commit()
 
-            return f"✅ Customer {name} added"
+        return f"✅ Customer {name} added"
 
         # -------------------------
         # ADD EXPENSE
