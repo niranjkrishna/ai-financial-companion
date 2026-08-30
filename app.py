@@ -57,7 +57,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Add customer Rahul Kumar phone 9876543210"
+                return " Format: Add customer Rahul Kumar phone 9876543210"
 
             name = match.group(1).strip()
             phone = match.group(2)
@@ -73,7 +73,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Customer {name} added"
+            return f"Customer {name} added"
 
         # -------------------------
         # ADD EXPENSE
@@ -86,7 +86,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Add expense Rent 5000"
+                return "Format: Add expense Rent 5000"
 
             category = match.group(1)
             amount = float(match.group(2))
@@ -102,7 +102,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Expense ₹{amount} added"
+            return f"Expense ₹{amount} added"
 
         # -------------------------
         # ADD CREDIT
@@ -115,7 +115,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Add credit 5000 for Rahul Kumar"
+                return "Format: Add credit 5000 for Rahul Kumar"
 
             amount = float(match.group(1))
             customer_name = match.group(2).strip()
@@ -130,7 +130,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"❌ Customer {customer_name} not found"
+                return f"Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -143,7 +143,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Credit ₹{amount} added for {customer_name}"
+            return f"Credit ₹{amount} added for {customer_name}"
 
         # -------------------------
         # RECORD SALE
@@ -156,7 +156,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Record sale 5000 for Rahul Kumar"
+                return "Format: Record sale 5000 for Rahul Kumar"
 
             amount = float(match.group(1))
             customer_name = match.group(2).strip()
@@ -171,7 +171,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"❌ Customer {customer_name} not found"
+                return f"Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -184,7 +184,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Sale ₹{amount} recorded for {customer_name}"
+            return f"Sale ₹{amount} recorded for {customer_name}"
 
         # -------------------------
         # ADD INVENTORY
@@ -197,7 +197,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Add inventory Rice qty 50"
+                return "Format: Add inventory Rice qty 50"
 
             product = match.group(1).strip()
             qty = int(match.group(2))
@@ -213,7 +213,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Inventory updated: {product} ({qty})"
+            return f"Inventory updated: {product} ({qty})"
 
         # -------------------------
         # PAY CREDIT
@@ -226,7 +226,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return "❌ Format: Pay credit 1000 for Rahul Kumar"
+                return "Format: Pay credit 1000 for Rahul Kumar"
 
             amount = float(match.group(1))
             customer_name = match.group(2).strip()
@@ -241,7 +241,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"❌ Customer {customer_name} not found"
+                return f"Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -254,7 +254,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"✅ Received ₹{amount} from {customer_name}"
+            return f"Received ₹{amount} from {customer_name}"
 
         # -------------------------
         # CLEAR ALL CREDITS
@@ -270,7 +270,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return "✅ All outstanding credits cleared"
+            return "All outstanding credits cleared"
 
         return None
 
@@ -438,7 +438,7 @@ st.metric(
 )
 st.divider()
 
-st.subheader("📈 Business Health Score")
+st.subheader("Business Health Score")
 
 health_score = 78
 
@@ -452,7 +452,7 @@ st.metric(
 )
 st.divider()
 
-st.subheader("🤖 AI Recommendations")
+st.subheader("AI Recommendations")
 
 st.info("""
 • Recover pending credit payments
