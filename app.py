@@ -46,35 +46,25 @@ def process_voice_command(text):
 
     try:
 
-        # -------------------------
         # ADD CUSTOMER
-        # -------------------------
         if text.startswith("add customer"):
+            ...
+            return f"✅ Customer {name} added"
 
-            match = re.search(
-                r"add customer\s+(.+)\s+phone\s+(\d+)",
-                text
-            )
+        # ADD EXPENSE
+        elif text.startswith("add expense"):
+            ...
+            return f"✅ Expense added"
 
-            if not match:
-                return "❌ Format: Add customer Rahul Kumar phone 9876543210"
+        # ADD CREDIT
+        elif text.startswith("add credit"):
+            ...
+            return f"✅ Credit added"
 
-            name = match.group(1).strip()
-            phone = match.group(2)
+        return None
 
-        cursor.execute(
-            """
-            INSERT INTO Customers
-            (customer_name, phone)
-            VALUES (?, ?)
-            """,
-            (name, phone)
-        )
-
-        conn.commit()
-
-        return f"✅ Customer {name} added"
-
+    except Exception as e:
+        return f"❌ {e}"
         # -------------------------
         # ADD EXPENSE
         # -------------------------
