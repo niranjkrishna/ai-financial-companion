@@ -185,30 +185,30 @@ def process_voice_command(text):
             (customer_name.lower(),)
         ).fetchone()
 
-            if customer:
+        if customer:
 
-                cursor.execute(
-                    """
-                    INSERT INTO Sales
-                    (
-                        customer_id,
-                        total_amount,
-                        payment_method
-                    )
-                    VALUES (?, ?, ?)
-                    """,
-                    (
-                        customer[0],
-                        amount,
-                        "Cash"
-                    )
+            cursor.execute(
+                """
+                INSERT INTO Sales
+                (
+                    customer_id,
+                    total_amount,
+                    payment_method
                 )
+                VALUES (?, ?, ?)
+                """,
+                (
+                    customer[0],
+                    amount,
+                    "Cash"
+                )
+            )
 
-                conn.commit()
+            conn.commit()
 
-                return f"✅ Sale ₹{amount} recorded for {customer_name}"
+            return f"✅ Sale ₹{amount} recorded for {customer_name}"
 
-            return f"❌ Customer {customer_name} not found"
+        return f"❌ Customer {customer_name} not found"
 
         # -------------------------
         # ADD INVENTORY
