@@ -450,20 +450,22 @@ credit_df = pd.read_sql_query(
     SELECT
         c.customer_name,
         c.phone,
-        cp.credit_amount,
-        cp.paid_amount
+        SUM(cp.credit_amount) AS credit_amount,
+        SUM(cp.paid_amount) AS paid_amount
     FROM Customers c
     JOIN Credit_Payments cp
     ON c.customer_id = cp.customer_id
+    GROUP BY c.customer_id, c.customer_name, c.phone
     """,
     conn
 )
 
 credit_df["balance"] = (
     credit_df["credit_amount"]
-    -
-    credit_df["paid_amount"]
+    - credit_df["paid_amount"]
 )
+
+credit_df = credit_df[credit_df["balance"] > 0]
 # -------------------------
 # WHATSAPP REMINDERS
 # -------------------------
