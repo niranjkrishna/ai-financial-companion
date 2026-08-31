@@ -449,6 +449,7 @@ credit_df = pd.read_sql_query(
     """
     SELECT
         c.customer_name,
+        c.phone,
         cp.credit_amount,
         cp.paid_amount
     FROM Customers c
