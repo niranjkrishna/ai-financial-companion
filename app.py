@@ -5,7 +5,22 @@ import speech_recognition as sr
 import tempfile
 import google.generativeai as genai
 import re
+import urllib.parse
+def generate_whatsapp_link(phone, name, balance):
 
+    message = f"""
+Dear {name},
+
+This is a friendly reminder that your outstanding balance is ₹{balance:,.0f}.
+
+Kindly clear the payment at your earliest convenience.
+
+Thank you.
+"""
+
+    encoded = urllib.parse.quote(message)
+
+    return f"https://wa.me/91{phone}?text={encoded}"
 # -----------------------------
 # PAGE CONFIG
 # -----------------------------
@@ -448,7 +463,30 @@ credit_df["balance"] = (
     -
     credit_df["paid_amount"]
 )
+# -------------------------
+# WHATSAPP REMINDERS
+# -------------------------
 
+st.subheader("Send Payment Reminders")
+
+for _, row in credit_df.iterrows():
+
+    if row["balance"] > 0:
+
+        link = generate_whatsapp_link(
+            row["phone"],
+            row["customer_name"],
+            row["balance"]
+        )
+
+        st.write(
+            f"{row['customer_name']} - ₹{row['balance']:,.0f}"
+        )
+
+        st.link_button(
+            f"📲 WhatsApp {row['customer_name']}",
+            link
+        )
 st.dataframe(
     credit_df,
     use_container_width=True
@@ -580,3 +618,20 @@ if question:
 
         st.write(answer)
 
+import urllib.parse
+def generate_whatsapp_link(phone, name, balance):
+
+    message = f"""
+Dear {name},
+
+This is a friendly reminder that your outstanding balance is ₹{balance:,.0f}.
+
+Kindly clear the payment at your earliest convenience.
+
+Thank you.
+"""
+
+    encoded = urllib.parse.quote(message)
+
+    return f"https://wa.me/91{phone}?text={encoded}"
+    
