@@ -259,18 +259,42 @@ def process_voice_command(text):
         # -------------------------
         # CLEAR ALL CREDITS
         # -------------------------
-        elif text == "clear all credits":
+        elif text.startswith("clear credit"):
 
-            cursor.execute(
-                """
-                UPDATE Credit_Payments
-                SET paid_amount = credit_amount
-                """
-            )
+            match = re.search(
+                r"clear credit\s+for\s+(.+)",
+                text
+        )
 
-            conn.commit()
+        if not match:
+            return "❌ Format: Clear credit for Rahul Kumar"
 
-            return "All outstanding credits cleared"
+        customer_name = match.group(1).strip()
+
+        customer = cursor.execute(
+            """
+            SELECT customer_id
+            FROM Customers
+            WHERE LOWER(customer_name)=?
+            """,
+            (customer_name.lower(),)
+        ).fetchone()
+
+        if not customer:
+            return f"❌ Customer {customer_name} not found"
+
+        cursor.execute(
+            """
+            UPDATE Credit_Payments
+            SET paid_amount = credit_amount
+            WHERE customer_id = ?
+            """,
+            (customer[0],)
+        )
+
+        conn.commit()
+
+        return f"✅ Credit cleared for {customer_name}"
 
         return None
 
