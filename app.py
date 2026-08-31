@@ -494,7 +494,6 @@ st.dataframe(
     credit_df.reset_index(drop=True),
     hide_index=True
 )
-)
 
 total_pending = credit_df["balance"].sum()
 
