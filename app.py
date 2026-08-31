@@ -6,21 +6,6 @@ import tempfile
 import google.generativeai as genai
 import re
 import urllib.parse
-def generate_whatsapp_link(phone, name, balance):
-
-    message = f"""
-Dear {name},
-
-This is a friendly reminder that your outstanding balance is ₹{balance:,.0f}.
-
-Kindly clear the payment at your earliest convenience.
-
-Thank you.
-"""
-
-    encoded = urllib.parse.quote(message)
-
-    return f"https://wa.me/91{phone}?text={encoded}"
 # -----------------------------
 # PAGE CONFIG
 # -----------------------------
@@ -638,3 +623,18 @@ Thank you.
 
     return f"https://wa.me/91{phone}?text={encoded}"
     
+def generate_whatsapp_link(phone, name, balance):
+
+    message = f"""
+Dear {name},
+
+This is a friendly reminder that your outstanding balance is ₹{balance:,.0f}.
+
+Kindly clear the payment at your earliest convenience.
+
+Thank you.
+"""
+
+    encoded = urllib.parse.quote(message)
+
+    return f"https://wa.me/91{phone}?text={encoded}"
