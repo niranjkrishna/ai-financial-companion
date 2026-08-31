@@ -443,7 +443,7 @@ st.dataframe(
 )
 st.divider()
 
-st.subheader(" Credit Recovery Dashboard")
+st.subheader("Credit Recovery Dashboard")
 
 credit_df = pd.read_sql_query(
     """
@@ -487,12 +487,13 @@ for _, row in credit_df.iterrows():
         )
 
         st.link_button(
-            f"📲 WhatsApp {row['customer_name']}",
+            f"WhatsApp {row['customer_name']}",
             link
         )
 st.dataframe(
-    credit_df,
-    use_container_width=True
+    credit_df.reset_index(drop=True),
+    hide_index=True
+)
 )
 
 total_pending = credit_df["balance"].sum()
