@@ -72,7 +72,7 @@ def process_voice_command(text):
             )
 
             if not match:
-                return " Format: Add customer Rahul Kumar phone 9876543210"
+                return "Format: Add customer Rahul Kumar phone 9876543210"
 
             name = match.group(1).strip()
             phone = match.group(2)
@@ -88,7 +88,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Customer {name} added"
+            return f"✅ Customer {name} added"
 
         # -------------------------
         # ADD EXPENSE
@@ -117,7 +117,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Expense ₹{amount} added"
+            return f"✅ Expense ₹{amount} added"
 
         # -------------------------
         # ADD CREDIT
@@ -145,7 +145,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"Customer {customer_name} not found"
+                return f"❌ Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -158,7 +158,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Credit ₹{amount} added for {customer_name}"
+            return f"✅ Credit ₹{amount} added for {customer_name}"
 
         # -------------------------
         # RECORD SALE
@@ -186,7 +186,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"Customer {customer_name} not found"
+                return f"❌ Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -199,7 +199,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Sale ₹{amount} recorded for {customer_name}"
+            return f"✅ Sale ₹{amount} recorded for {customer_name}"
 
         # -------------------------
         # ADD INVENTORY
@@ -228,7 +228,7 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Inventory updated: {product} ({qty})"
+            return f"✅ Inventory updated: {product} ({qty})"
 
         # -------------------------
         # PAY CREDIT
@@ -256,7 +256,7 @@ def process_voice_command(text):
             ).fetchone()
 
             if not customer:
-                return f"Customer {customer_name} not found"
+                return f"❌ Customer {customer_name} not found"
 
             cursor.execute(
                 """
@@ -269,50 +269,52 @@ def process_voice_command(text):
 
             conn.commit()
 
-            return f"Received ₹{amount} from {customer_name}"
+            return f"✅ Received ₹{amount} from {customer_name}"
 
         # -------------------------
-        # CLEAR ALL CREDITS
+        # CLEAR CREDIT
         # -------------------------
         elif text.startswith("clear credit"):
 
             match = re.search(
                 r"clear credit\s+for\s+(.+)",
                 text
-        )
+            )
 
-        if not match:
-            return "❌ Format: Clear credit for Rahul Kumar"
+            if not match:
+                return "Format: Clear credit for Rahul Kumar"
 
-        customer_name = match.group(1).strip()
+            customer_name = match.group(1).strip()
 
-        customer = cursor.execute(
-            """
-            SELECT customer_id
-            FROM Customers
-            WHERE LOWER(customer_name)=?
-            """,
-            (customer_name.lower(),)
-        ).fetchone()
+            customer = cursor.execute(
+                """
+                SELECT customer_id
+                FROM Customers
+                WHERE LOWER(customer_name)=?
+                """,
+                (customer_name.lower(),)
+            ).fetchone()
 
-        if not customer:
-            return f"❌ Customer {customer_name} not found"
+            if not customer:
+                return f"❌ Customer {customer_name} not found"
 
-        cursor.execute(
-            """
-            UPDATE Credit_Payments
-            SET paid_amount = credit_amount
-            WHERE customer_id = ?
-            """,
-            (customer[0],)
-        )
+            cursor.execute(
+                """
+                UPDATE Credit_Payments
+                SET paid_amount = credit_amount
+                WHERE customer_id = ?
+                """,
+                (customer[0],)
+            )
 
-        conn.commit()
+            conn.commit()
 
-        return f"✅ Credit cleared for {customer_name}"
+            return f"✅ Credit cleared for {customer_name}"
 
         return None
 
+    except Exception as e:
+        return f"❌ {e}"
     except Exception as e:
         return f"❌ {e}"
     except Exception as e:
